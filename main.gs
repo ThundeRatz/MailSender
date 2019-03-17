@@ -147,13 +147,57 @@ function send_approved() {
   }
 }
 
+function send_approved() {
+  log('Iniciando envio de e-mails de reprovação no PS')
+
+  var from = configSheet.getRange('C87').getValue()
+  var subject = configSheet.getRange('C88').getValue()
+  var message = configSheet.getRange('C89').getValue()
+  var sheetName = configSheet.getRange('C109').getValue()
+  var emailsColumn = configSheet.getRange('C110').getValue()
+  var confirmColumn = configSheet.getRange('C111').getValue()
+  var startLine = configSheet.getRange('C112').getValue()
+
+  log('De: ' + from);
+  log('Assunto: ' + subject);
+  log('Aba: ' + sheetName);
+  log('Coluna de E-mails: ' + emailsColumn.toString());
+  log('Coluna de Confirmação: ' + confirmColumn.toString());
+  log('Linha Inicial: ' + startLine.toString());
+
+  var sheet = ssheet.getSheetByName(sheetName);
+  var rows = sheet.getLastRow();
+
+  log('Linha Final: ' + rows);
+
+  for (var i = startLine; i <= rows; i++) {
+    var emailAddress = sheet.getRange(i, emailsColumn).getValue();
+    var emailSent = sheet.getRange(i, confirmColumn).getValue();
+
+    if (emailSent == EMAIL_SENT) {
+      continue;
+    }
+
+    MailApp.sendEmail({
+      name: from,
+      to: emailAddress,
+      subject: subject,
+      htmlBody: message
+    });
+
+    log('E-mail enviado para ' + emailAddress);
+    sheet.getRange(i, confirmColumn).setValue(EMAIL_SENT);
+    SpreadsheetApp.flush();
+  }
+}
+
 function onOpen() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
   var menuEntries = [];
   menuEntries.push({name: "E-mails entrevista", functionName: "send_interview"});
   menuEntries.push({name: "E-mails palestra geral", functionName: "send_palestra"});
   menuEntries.push({name: "E-mails aprovados", functionName: "send_approved"});
+  menuEntries.push({name: "E-mails reprovados", functionName: "send_reproved"});
 
-  ss.addMenu("E-mails", menuEntries);
+  ssheet.addMenu("E-mails", menuEntries);
   Logger.log('Menu criado');
 }
