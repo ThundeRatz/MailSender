@@ -6,7 +6,7 @@ var configSheet = ssheet.getSheetByName('Config')
 var logCell = configSheet.getRange('G2')
 var logs = logCell.getValue();
 
-var replyTo = "gestão@thunderatz.org";
+var replyTo = "gestao@thunderatz.org";
 
 function log(str) {
     var date = Utilities.formatDate(new Date(), "GMT-3", "[yyyy-MM-dd hh:mm:ss] ");
