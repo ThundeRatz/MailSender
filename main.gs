@@ -132,6 +132,7 @@ function send_approved() {
 
   for (var i = startLine; i <= rows; i++) {
     var emailAddress = sheet.getRange(i, emailsColumn).getValue();
+    var thunderEmail = sheet.getRange(i, emailsColumn+1).getValue();
     var emailSent = sheet.getRange(i, confirmColumn).getValue();
 
     if (emailSent == EMAIL_SENT) {
@@ -142,7 +143,7 @@ function send_approved() {
       name: from,
       to: emailAddress,
       subject: subject,
-      htmlBody: Utilities.formatString(message, emailAddress),
+      htmlBody: Utilities.formatString(message, thunderEmail),
       replyTo: replyTo
     });
 
@@ -152,7 +153,7 @@ function send_approved() {
   }
 }
 
-function send_approved() {
+function send_reproved() {
   log('Iniciando envio de e-mails de reprovação no PS')
 
   var from = configSheet.getRange('C87').getValue()
