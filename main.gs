@@ -6,6 +6,8 @@ var configSheet = ssheet.getSheetByName('Config')
 var logCell = configSheet.getRange('G2')
 var logs = logCell.getValue();
 
+var cc = "gestão@thunderatz.org";
+
 function log(str) {
     var date = Utilities.formatDate(new Date(), "GMT-3", "[yyyy-MM-dd hh:mm:ss] ");
 
@@ -49,7 +51,8 @@ function send_interview() {
       name: from,
       to: emailAddress,
       subject: subject,
-      htmlBody: message
+      htmlBody: message,
+      cc: cc
     });
 
     log('E-mail enviado para ' + emailAddress);
@@ -94,7 +97,8 @@ function send_palestra() {
       name: from,
       to: emailAddress,
       subject: subject,
-      htmlBody: message
+      htmlBody: message,
+      cc: cc
     });
 
     log('E-mail enviado para ' + emailAddress);
@@ -138,7 +142,8 @@ function send_approved() {
       name: from,
       to: emailAddress,
       subject: subject,
-      htmlBody: Utilities.formatString(message, emailAddress)
+      htmlBody: Utilities.formatString(message, emailAddress),
+      cc: cc
     });
 
     log('E-mail enviado para ' + emailAddress);
@@ -182,7 +187,8 @@ function send_approved() {
       name: from,
       to: emailAddress,
       subject: subject,
-      htmlBody: message
+      htmlBody: message,
+      cc: cc
     });
 
     log('E-mail enviado para ' + emailAddress);
